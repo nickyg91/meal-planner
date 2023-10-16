@@ -1,0 +1,13 @@
+@import '../../node_modules/primeflex/primeflex.css';
+@import '../../node_modules/primevue/resources/primevue.css';
+@import '../../node_modules/primevue/resources/themes/arya-blue/theme.css';
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+html {
+  width: 100vw;
+  height: 100vh;
+}
