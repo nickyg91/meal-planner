@@ -22,7 +22,7 @@
     "primeicons": "^6.0.1",
     "primevue": "^3.36.0",
     "vee-validate": "^4.11.8",
-    "vue": "^3.3.4",
+    "vue": "^3.3.6",
     "vue-router": "^4.2.5",
     "zod": "^3.22.4"
   },

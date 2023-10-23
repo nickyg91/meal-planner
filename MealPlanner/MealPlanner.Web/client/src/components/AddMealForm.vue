@@ -3,26 +3,33 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { Meal } from '@/shared/models/meal.model';
 import { useMealPlannerStore } from '@/stores/meal-planner.store';
-import { toTypedSchema } from '@vee-validate/zod';
 import * as zod from 'zod';
 import { useForm } from 'vee-validate';
+import { toTypedSchema } from '@vee-validate/zod';
+import { ref } from 'vue';
 const store = useMealPlannerStore();
-
+const isLoading = ref(false);
 const zodSchema = zod.object({
-  name: zod.string().min(1, {
-    message: 'Meal Name is required.'
-  })
+  name: zod
+    .string()
+    .min(1, {
+      message: 'Meal Name is required.'
+    })
+    .default('')
 });
 
-const mealNameFieldSchema = toTypedSchema(zodSchema);
+const typedSchema = toTypedSchema(zodSchema);
 
-const { errors, values } = useForm({
-  validationSchema: mealNameFieldSchema
+const { errors, defineComponentBinds, handleSubmit } = useForm({
+  validationSchema: typedSchema
 });
 
-async function mealSubmitted(): Promise<void> {
+const mealSubmitted = handleSubmit(async (values) => {
+  isLoading.value = true;
   await store.saveMeal(values as Meal);
-}
+  isLoading.value = false;
+});
+const mealName = defineComponentBinds('name');
 </script>
 
 <template>
@@ -33,7 +40,7 @@ async function mealSubmitted(): Promise<void> {
           :class="{ 'p-invalid': errors.name }"
           name="name"
           id="name"
-          v-model="values.name"
+          v-bind="mealName"
         ></InputText>
         <label for="name">Meal Name</label>
       </span>
@@ -42,7 +49,7 @@ async function mealSubmitted(): Promise<void> {
       </div>
     </div>
     <div class="flex flex-auto justify-content-end">
-      <Button @click="mealSubmitted"> Add </Button>
+      <Button :loading="isLoading" @click="mealSubmitted"> Add </Button>
     </div>
   </div>
 </template>

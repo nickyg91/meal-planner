@@ -7,6 +7,10 @@ const router = createRouter({
     {
       path: '/meals',
       component: MealsView
+    },
+    {
+      path: '/',
+      redirect: '/meals'
     }
   ]
 });

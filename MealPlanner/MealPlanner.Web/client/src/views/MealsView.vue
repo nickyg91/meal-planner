@@ -1,37 +1,47 @@
 <script lang="ts" setup>
+import SideDrawer from '@/components/SideDrawer.vue';
 import { useMealPlannerStore } from '@/stores/meal-planner.store';
 import { onMounted, ref } from 'vue';
 import MultiSelect from 'primevue/multiselect';
-import Card from 'primevue/card';
-import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import AddMealForm from '@/components/AddMealForm.vue';
+import Button from 'primevue/button';
+
 const store = useMealPlannerStore();
 const showAddDialog = ref(false);
-
-onMounted(async () => {
-  await store.getAllMeals();
-});
-
 function addMealClicked(): void {
   showAddDialog.value = true;
 }
+onMounted(async () => {
+  await store.getAllMeals();
+});
 </script>
 <template>
   <div>
-    <Card class="flex flex-auto p-3 align-content-between">
+    <SideDrawer :meals="store.meals">
+      <template #title> Meal Planner </template>
       <template #content>
-        <div class="flex flex-grow-1">
-          <div class="flex mr-2">
-            <MultiSelect :options="store.meals" option-label="name" option-value="id"></MultiSelect>
+        <div class="flex flex-column p-1">
+          <div class="flex mb-2">
+            <MultiSelect
+              class="w-full"
+              :options="store.meals"
+              option-label="name"
+              option-value="id"
+            ></MultiSelect>
           </div>
           <div class="flex">
-            <Button @click="addMealClicked">Add</Button>
+            <Button
+              styleClass="text-center"
+              class="w-full"
+              @click="addMealClicked"
+              label="Add"
+            ></Button>
           </div>
         </div>
       </template>
-    </Card>
-    <Dialog :closable="true" v-model:visible="showAddDialog">
+    </SideDrawer>
+    <Dialog :draggable="false" :modal="true" :closable="true" v-model:visible="showAddDialog">
       <AddMealForm></AddMealForm>
     </Dialog>
   </div>
