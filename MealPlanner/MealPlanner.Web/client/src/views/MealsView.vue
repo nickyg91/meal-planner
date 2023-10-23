@@ -23,19 +23,23 @@ onMounted(async () => {
       <template #content>
         <div class="flex flex-column p-1">
           <div class="flex mb-2">
-            <MultiSelect
-              class="w-full"
-              :options="store.meals"
-              option-label="name"
-              option-value="id"
-            ></MultiSelect>
+            <span class="p-float-label w-full">
+              <MultiSelect
+                id="ms-meals"
+                class="w-full"
+                :options="store.meals"
+                option-label="name"
+                option-value="id"
+              ></MultiSelect>
+              <label for="ms-meals">Meals</label>
+            </span>
           </div>
           <div class="flex">
             <Button
               styleClass="text-center"
               class="w-full"
               @click="addMealClicked"
-              label="Add"
+              label="Add Meal"
             ></Button>
           </div>
         </div>
