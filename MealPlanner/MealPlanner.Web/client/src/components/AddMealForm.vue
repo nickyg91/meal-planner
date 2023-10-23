@@ -20,7 +20,7 @@ const zodSchema = zod.object({
 
 const typedSchema = toTypedSchema(zodSchema);
 
-const { errors, defineComponentBinds, handleSubmit } = useForm({
+const { errors, defineComponentBinds, handleSubmit, resetForm } = useForm({
   validationSchema: typedSchema
 });
 
@@ -28,6 +28,7 @@ const mealSubmitted = handleSubmit(async (values) => {
   isLoading.value = true;
   await store.saveMeal(values as Meal);
   isLoading.value = false;
+  resetForm();
 });
 const mealName = defineComponentBinds('name');
 </script>
@@ -49,7 +50,7 @@ const mealName = defineComponentBinds('name');
       </div>
     </div>
     <div class="flex flex-auto justify-content-end">
-      <Button :loading="isLoading" @click="mealSubmitted"> Add </Button>
+      <Button type="button" label="Add" :loading="isLoading" @click="mealSubmitted"></Button>
     </div>
   </div>
 </template>
