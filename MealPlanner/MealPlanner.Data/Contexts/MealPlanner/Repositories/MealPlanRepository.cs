@@ -12,11 +12,11 @@ public class MealPlanRepository : IMealPlanRepository
         _context = context;
     }
 
-    public async Task<MealPlan> InsertMealPlan(MealPlan plan)
+    public async Task<List<MealPlan>> InsertMealPlan(List<MealPlan> plans)
     {
-        _context.MealPlans.Add(plan);
+        await _context.MealPlans.AddRangeAsync(plans);
         await _context.SaveChangesAsync();
-        return plan;
+        return plans;
     }
 
     public async Task<List<MealPlan>> GetMealPlansForWeek(DateTime startDate)

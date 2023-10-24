@@ -4,6 +4,8 @@ import type { Meal } from '@/shared/models/meal.model';
 import { mealService } from '@/shared/injection-keys';
 import type { MealPlannerService } from '@/shared/services/meal-planner.service';
 import { useToast } from 'primevue/usetoast';
+import { DateTime, Duration } from 'luxon';
+import type { MealPlan } from '@/shared/models/meal-plan.model';
 
 export const useMealPlannerStore = defineStore('mealPlanner', () => {
   const toastService = useToast();
@@ -36,9 +38,54 @@ export const useMealPlannerStore = defineStore('mealPlanner', () => {
     }
   }
 
+  function planMeals() {
+    const ids = meals.value.map((x) => x.id);
+    const chosenMealIds = new Array<number>();
+    const hasAtLeastSevenDaysOfMeals = ids.length >= 7;
+    while (chosenMealIds.length < 7) {
+      let id = getRandomId(ids);
+      if (chosenMealIds.indexOf(id) > -1 && hasAtLeastSevenDaysOfMeals) {
+        while (chosenMealIds.indexOf(id) > -1) {
+          id = getRandomId(ids);
+        }
+        chosenMealIds.push(id);
+      } else {
+        chosenMealIds.push(id);
+      }
+    }
+
+    const today = DateTime.now();
+    const lastMonday = getLastMonday(today);
+    let currentDateIteration = lastMonday;
+    const mealPlans: MealPlan[] = [];
+    chosenMealIds.forEach((val) => {
+      mealPlans.push({
+        date: currentDateIteration,
+        meal: meals.value.find((x) => x.id === val)!
+      });
+      currentDateIteration = currentDateIteration.plus({ days: 1 });
+      console.log(currentDateIteration.day);
+    });
+    console.log(mealPlans);
+  }
+
+  function getLastMonday(today: DateTime): DateTime {
+    const dayOfTheWeek = today.weekday;
+    //7 represents sunday
+    const monday = 1 - dayOfTheWeek;
+    return today.minus({
+      days: monday * -1
+    });
+  }
+
+  function getRandomId(ids: number[]) {
+    return ids[Math.floor(Math.random() * ids.length)];
+  }
+
   return {
     meals,
     getAllMeals,
-    saveMeal
+    saveMeal,
+    planMeals
   };
 });

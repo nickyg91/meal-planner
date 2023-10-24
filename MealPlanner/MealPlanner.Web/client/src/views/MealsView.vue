@@ -34,20 +34,21 @@ onMounted(async () => {
               <label for="ms-meals">Meals</label>
             </span>
           </div>
-          <div class="flex mb-2">
-            <Button
-              styleClass="text-center"
-              severity="help"
-              class="w-full"
-              label="Create Meal Plan"
-            ></Button>
-          </div>
           <div class="flex">
             <Button
               styleClass="text-center"
               class="w-full"
               @click="addMealClicked"
               label="Add Meal"
+            ></Button>
+          </div>
+          <div class="flex mb-2">
+            <Button
+              @click="store.planMeals"
+              styleClass="text-center"
+              severity="help"
+              class="w-full"
+              label="Create Meal Plan"
             ></Button>
           </div>
         </div>

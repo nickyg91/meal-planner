@@ -15,20 +15,25 @@ const zodSchema = zod.object({
     .min(1, {
       message: 'Meal Name is required.'
     })
+    .max(256, {
+      message: 'Meal Name must be less than 256 characters.'
+    })
     .default('')
 });
 
 const typedSchema = toTypedSchema(zodSchema);
 
-const { errors, defineComponentBinds, handleSubmit, resetForm } = useForm({
+const { errors, defineComponentBinds, handleSubmit, resetForm, meta } = useForm({
   validationSchema: typedSchema
 });
 
 const mealSubmitted = handleSubmit(async (values) => {
-  isLoading.value = true;
-  await store.saveMeal(values as Meal);
-  isLoading.value = false;
-  resetForm();
+  if (meta.value.valid) {
+    isLoading.value = true;
+    await store.saveMeal(values as Meal);
+    isLoading.value = false;
+    resetForm();
+  }
 });
 const mealName = defineComponentBinds('name');
 </script>
@@ -50,7 +55,13 @@ const mealName = defineComponentBinds('name');
       </div>
     </div>
     <div class="flex flex-auto justify-content-end">
-      <Button type="button" label="Add" :loading="isLoading" @click="mealSubmitted"></Button>
+      <Button
+        type="button"
+        :disabled="!meta.valid"
+        label="Add"
+        :loading="isLoading"
+        @click="mealSubmitted"
+      ></Button>
     </div>
   </div>
 </template>
