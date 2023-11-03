@@ -18,7 +18,7 @@ provide(mealService, new MealPlannerService(kyInstance));
 <template>
   <Toast position="top-center" group="appwideToast" />
   <Suspense>
-    <RouterView> </RouterView>
+    <RouterView class="main"> </RouterView>
   </Suspense>
   <LoadingSpinnerModal :show="loadingStore.getIsLoading()"></LoadingSpinnerModal>
 </template>

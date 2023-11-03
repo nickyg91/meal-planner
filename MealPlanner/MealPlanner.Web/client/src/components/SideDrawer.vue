@@ -58,12 +58,13 @@ function lockMenuClicked(): void {
 </template>
 <style scoped>
 .side-drawer {
-  width: 265px;
+  width: 260px;
   left: -195px;
   height: 100%;
   position: fixed;
   background-color: var(--bluegray-900);
   padding: 0.5em;
+  z-index: 100;
 }
 
 .side-drawer-show {

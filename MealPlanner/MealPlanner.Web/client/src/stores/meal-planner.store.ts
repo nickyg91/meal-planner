@@ -4,13 +4,14 @@ import type { Meal } from '@/shared/models/meal.model';
 import { mealService } from '@/shared/injection-keys';
 import type { MealPlannerService } from '@/shared/services/meal-planner.service';
 import { useToast } from 'primevue/usetoast';
-import { DateTime, Duration } from 'luxon';
+import { DateTime } from 'luxon';
 import type { MealPlan } from '@/shared/models/meal-plan.model';
 
 export const useMealPlannerStore = defineStore('mealPlanner', () => {
   const toastService = useToast();
   const meals = ref<Meal[]>([]);
   const mealPlannerService = inject<MealPlannerService>(mealService)!;
+  const pendingMealPlans = ref<MealPlan[]>([]);
   async function getAllMeals() {
     meals.value = (await mealPlannerService.getAllMeals()) ?? [];
   }
@@ -39,6 +40,7 @@ export const useMealPlannerStore = defineStore('mealPlanner', () => {
   }
 
   function planMeals() {
+    pendingMealPlans.value = [];
     const ids = meals.value.map((x) => x.id);
     const chosenMealIds = new Array<number>();
     const hasAtLeastSevenDaysOfMeals = ids.length >= 7;
@@ -64,9 +66,8 @@ export const useMealPlannerStore = defineStore('mealPlanner', () => {
         meal: meals.value.find((x) => x.id === val)!
       });
       currentDateIteration = currentDateIteration.plus({ days: 1 });
-      console.log(currentDateIteration.day);
     });
-    console.log(mealPlans);
+    pendingMealPlans.value = [...mealPlans];
   }
 
   function getLastMonday(today: DateTime): DateTime {
@@ -84,6 +85,7 @@ export const useMealPlannerStore = defineStore('mealPlanner', () => {
 
   return {
     meals,
+    pendingMealPlans,
     getAllMeals,
     saveMeal,
     planMeals
