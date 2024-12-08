@@ -1,0 +1,6 @@
+﻿services:
+  mealplanner.web:
+    image: mealplanner.web
+    build:
+      context: .
+      dockerfile: MealPlanner.Web/Dockerfile
