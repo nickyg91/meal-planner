@@ -1,6 +1,6 @@
-using MealPlanner.Entities.Families;
+using MealPlanner.Data.Contexts.MealPlanner.Entities.Families;
 
-namespace MealPlanner.Entities.Meals;
+namespace MealPlanner.Data.Contexts.MealPlanner.Entities.Meals;
 
 public class MealPlan : BaseEntity
 {

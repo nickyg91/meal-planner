@@ -1,4 +1,4 @@
-﻿namespace MealPlanner.Entities;
+﻿namespace MealPlanner.Data;
 
 public class BaseEntity
 {

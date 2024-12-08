@@ -1,7 +1,7 @@
+using MealPlanner.Data.Contexts.MealPlanner.Entities.Families;
 using MealPlanner.Entities.Enums;
-using MealPlanner.Entities.Families;
 
-namespace MealPlanner.Entities.Meals;
+namespace MealPlanner.Data.Contexts.MealPlanner.Entities.Meals;
 
 public class MealIngredient : BaseEntity
 {
